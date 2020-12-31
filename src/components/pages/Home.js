@@ -1,39 +1,37 @@
-import React from 'react'
-import Filter from '../filter/Filter'
-import Button from '../filter/buttons/Button'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import Filter from '../filter/Filter';
+import Button from '../filter/buttons/Button';
+import { Link } from 'react-router-dom';
 
-const Home = ({ state, state: { inputs }, dispatch }) => {
-  const searchQuery = () => {
-    dispatch({
-      type: 'SEARCH',
-      title: inputs.title,
-      genres: inputs.genres.value,
-      rates: inputs.rates.value,
-      year: inputs.year
-    })
-  }
-  const searchList = () => {
-    dispatch({
-      type: 'SEARCH-LIST',
-    })
-  }
-  return (
-    <>
-      <Filter
-        state={state}
-        dispatch={dispatch}
-        searchQuery={searchQuery}
-      />
-      <Link to="/search">
-        <Button
-          className="btn-link btn-sm"
-          text="Список фильмов"
-          click={searchList}
-        />
-      </Link>
-    </>
-  )
-}
+const Home = ({ state: { inputs, search }, dispatch }) => {
+	const searchQuery = () => {
+		dispatch({
+			type: 'SEARCH_QUERY',
+			title: inputs.title,
+			genre: inputs.genres.value.id,
+			rate: inputs.rates.value.id,
+			year: inputs.year,
+			page: ++search.result.page // чтобы пришли новые данные, увеличиваем page
+		});
+	};
+	const searchList = () => {
+		dispatch({
+			type: 'SEARCH_LIST',
+			page: ++search.result.page
+		});
+	};
+	return (
+		<>
+			<Filter inputs={inputs} event={searchQuery} dispatch={dispatch} />
+			<Link to="/search">
+				<Button
+					className="btn-link btn-sm"
+					text="Список фильмов"
+					event={searchList}
+				/>
+			</Link>
+		</>
+	);
+};
 
-export default Home
+export default Home;

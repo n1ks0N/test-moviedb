@@ -1,46 +1,78 @@
-const API_KEY = '19a8c14831badda7e2277e0932b1d5d1'
-
 const initialState = {
-	result: {},
-	query: '/home'
-}
+	result: {
+		page: 0
+	},
+	query: '/home',
+	loading: false
+};
 
 const searchReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case 'SEARCH':
-			// fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ru&query=${action.title}&page=1&include_adult=false&year=${action.year}`)
-			// 	.then(response => response.json())
-			// 	.then(result => console.log(result))
+		case 'SEARCH_QUERY_REQUESTED':
 			return {
 				...state,
-				query: `/search?q=${action.title}&page=1&include_adult=false&year=${action.year}`
-			}
-		case 'SEARCH-LIST':
-			const result = fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=19a8c14831badda7e2277e0932b1d5d1&language=ru&page=1`)
-				.then(response => response.json())
-				.then(result => {
-					if (result) {
-						console.log(result)
-						return {
-							...state,
-							page: result.page,
-							result: result.results
-						}
-					}
-					console.log(state)
-					return state
-				})
-			console.log(result)
+				loading: true
+			};
+		case 'SEARCH_QUERY_SUCCEEDED':
 			return {
 				...state,
-				result: result
-			}
+				result: action.result,
+				query: '/search',
+				loading: false
+			};
+		case 'SEARCH_QUERY_FAILED':
+			return {
+				...state,
+				result: action.error,
+				loading: false
+			};
+
+		case 'SEARCH_LIST':
+			return {
+				...state,
+				loading: true
+			};
+		case 'SEARCH_LIST_SUCCEEDED':
+			return {
+				...state,
+				result: action.result,
+				query: '/search',
+				loading: false
+			};
+		case 'SEARCH_LIST_FAILED':
+			return {
+				...state,
+				result: action.error,
+				loading: false
+			};
+
 		default:
-			return state
+			return state;
 	}
-}
+};
 
-export const searchActionCreator = (title, genre, rate, year) => ({ type: 'SEARCH', title: title, genres: genre, rates: rate, year: year })
-export const searchListActionCreator = () => ({ type: 'SEARCH-LIST' })
+export const searchQueryActionCreator = () => ({
+	type: 'SEARCH_QUERY'
+});
+export const searchQuerySucceededActionCreator = (result) => ({
+	type: 'SEARCH_QUERY_SUCCEEDED',
+	result: result
+});
+export const searchQueryFailedActionCreator = (error) => ({
+	type: 'SEARCH_QUERY_FAILED',
+	error: error
+});
 
-export default searchReducer
+export const searchListActionCreator = () => ({
+	type: 'SEARCH_LIST'
+});
+export const searchListSucceededActionCreator = (result) => ({
+	type: 'SEARCH_LIST_SUCCEEDED',
+	result: result
+});
+export const searchListFailedActionCreator = (error) => ({
+	type: 'SEARCH_LIST_FAILED',
+	error: error
+});
+
+export default searchReducer;
