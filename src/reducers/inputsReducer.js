@@ -1,5 +1,5 @@
 const initialState = {
-	title: 'побег',
+	title: 'любовь',
 	year: '',
 	genres: {
 		select: [
@@ -126,7 +126,7 @@ const searchReducer = (state = initialState, action) => {
 				// лежат ли внутри свойства, другие свойства (проверка на содержание внутри свойства value)
 				const val = state[action.name].select.filter((data) => {
 					if (data.value === action.value) {
-						return data.id;
+						return data;
 					} else {
 						return 0;
 					}

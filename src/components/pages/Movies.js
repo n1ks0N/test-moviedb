@@ -1,37 +1,38 @@
-import React from 'react';
-import Filter from '../filter/Filter';
+import React, { useMemo } from 'react';
 import List from '../list/List';
 import Poster from '../poster/Poster';
+import styled from 'styled-components';
 
-const Movies = ({ state: { inputs, search }, dispatch }) => {
-	const searchQuery = () => {
-		dispatch({
-			type: 'SEARCH_QUERY',
-			title: inputs.title,
-			genre: inputs.genres.value.id,
-			rate: inputs.rates.value.id,
-			year: inputs.year,
-			page: ++search.result.page
-		});
-	};
+const FlexWrapper = styled.div`
+	display: flex;
+`;
+
+const Movies = ({ state: { search, poster }, dispatch }) => {
 	const showPoster = (id) => {
-		console.log(id);
 		dispatch({
 			type: 'GET_FILM',
 			id: id
 		});
 	};
-
 	return (
-		<>
-			<Filter inputs={inputs} event={searchQuery} dispatch={dispatch} />
+		<div>
 			<h1>Результаты поиска</h1>
-			{'results' in search.result ? (
-				<List result={search.result.results} event={showPoster} />
-			) : (
-				<p>Что-то пошло не так...</p>
-			)}
-		</>
+			<FlexWrapper>
+				{'results' in search.result ? (
+					search.loading ? (
+						<>
+							<List result={search.result.results} event={showPoster} />
+							<p>Loading..</p>
+						</>
+					) : (
+						<List result={search.result.results} event={showPoster} />
+					)
+				) : (
+					<>Что-то пошло не так</>
+				)}
+				{poster.show ? <Poster poster={poster} /> : <></>}
+			</FlexWrapper>
+		</div>
 	);
 };
 

@@ -2,7 +2,6 @@ import React from 'react';
 import Card from './card/Card';
 
 const Cards = ({ result, event }) => {
-	console.log(result);
 	return (
 		<>
 			{result.map((data) => (
@@ -11,7 +10,12 @@ const Cards = ({ result, event }) => {
 					title={data.title}
 					overview={data.overview}
 					rates={data.vote_average}
-					date={data.release_date}
+					date={
+						data.release_date
+							? data.release_date.split('-')[0]
+							: 'Дата выхода неизвестна'
+					} // отображение только года
+					img={data.backdrop_path}
 					id={data.id}
 					event={event}
 				/>

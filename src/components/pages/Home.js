@@ -3,15 +3,15 @@ import Filter from '../filter/Filter';
 import Button from '../filter/buttons/Button';
 import { Link } from 'react-router-dom';
 
-const Home = ({ state: { inputs, search }, dispatch }) => {
+const Home = ({ state: { inputs, search }, dispatch, location }) => {
 	const searchQuery = () => {
 		dispatch({
 			type: 'SEARCH_QUERY',
-			title: inputs.title,
+			title: inputs.title.split(' ').join('+'),
 			genre: inputs.genres.value.id,
 			rate: inputs.rates.value.id,
 			year: inputs.year,
-			page: ++search.result.page // чтобы пришли новые данные, увеличиваем page
+			page: 1 // чтобы пришли новые данные, увеличиваем page
 		});
 	};
 	const searchList = () => {
@@ -21,16 +21,20 @@ const Home = ({ state: { inputs, search }, dispatch }) => {
 		});
 	};
 	return (
-		<>
+		<div>
 			<Filter inputs={inputs} event={searchQuery} dispatch={dispatch} />
-			<Link to="/search">
-				<Button
-					className="btn-link btn-sm"
-					text="Список фильмов"
-					event={searchList}
-				/>
-			</Link>
-		</>
+			{location.pathname !== '/search' ? (
+				<Link to="/search">
+					<Button
+						className="btn-link btn-sm"
+						text="Список фильмов"
+						event={searchList}
+					/>
+				</Link>
+			) : (
+				<></>
+			)}
+		</div>
 	);
 };
 

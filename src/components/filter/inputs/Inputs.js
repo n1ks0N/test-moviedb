@@ -1,6 +1,11 @@
 import React from 'react';
 import Input from './types/Input';
 import Select from './types/Select';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+	width: 800px;
+`;
 
 const Inputs = ({ dispatch, inputs: { title, year, genres, rates } }) => {
 	const changeInput = ({ name, value }) => {
@@ -11,7 +16,7 @@ const Inputs = ({ dispatch, inputs: { title, year, genres, rates } }) => {
 		});
 	};
 	return (
-		<>
+		<Wrapper>
 			<Input
 				type="text"
 				name="title"
@@ -42,7 +47,7 @@ const Inputs = ({ dispatch, inputs: { title, year, genres, rates } }) => {
 				value={year}
 				event={changeInput}
 			/>
-		</>
+		</Wrapper>
 	);
 };
 

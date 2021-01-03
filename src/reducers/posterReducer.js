@@ -1,13 +1,29 @@
-const initialState = {};
+const initialState = {
+	result: {},
+	show: false,
+	loading: false
+};
 
 const posterReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case 'GET_FILM':
-			return state;
+			return {
+				result: {},
+				show: true,
+				loading: true
+			};
 		case 'GET_FILM_SUCCEEDED':
-			return action.result;
+			return {
+				...state,
+				result: action.result,
+				loading: false
+			};
 		case 'GET_FILM_FAILED':
-			return state;
+			return {
+				...state,
+				result: action.error,
+				loading: false
+			};
 		default:
 			return state;
 	}
