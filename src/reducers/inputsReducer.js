@@ -1,5 +1,6 @@
+import { inputsValue } from '../constants/inputsValue';
 const initialState = {
-	title: 'любовь',
+	title: 'гонки',
 	year: '',
 	genres: {
 		select: [
@@ -154,6 +155,8 @@ const searchReducer = (state = initialState, action) => {
 				}
 			}
 			return state;
+		case 'RESET':
+			return inputsValue;
 		default:
 			return state;
 	}
@@ -163,6 +166,10 @@ export const changeActionCreator = (name, value) => ({
 	type: 'CHANGE_INPUT',
 	name: name,
 	value: value
+});
+
+export const resetActionCreator = () => ({
+	type: 'RESET'
 });
 
 export default searchReducer;

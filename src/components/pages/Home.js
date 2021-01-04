@@ -1,6 +1,6 @@
 import React from 'react';
 import Filter from '../filter/Filter';
-import Button from '../filter/buttons/Button';
+import Button from '../buttons/Button';
 import { Link } from 'react-router-dom';
 
 const Home = ({ state: { inputs, search }, dispatch, location }) => {
@@ -21,7 +21,7 @@ const Home = ({ state: { inputs, search }, dispatch, location }) => {
 		});
 	};
 	return (
-		<div>
+		<>
 			<Filter inputs={inputs} event={searchQuery} dispatch={dispatch} />
 			{location.pathname !== '/search' ? (
 				<Link to="/search">
@@ -34,7 +34,7 @@ const Home = ({ state: { inputs, search }, dispatch, location }) => {
 			) : (
 				<></>
 			)}
-		</div>
+		</>
 	);
 };
 

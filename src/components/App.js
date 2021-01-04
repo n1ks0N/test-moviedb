@@ -11,24 +11,35 @@ const App = (props) => {
 			document.body.clientHeight,
 			document.documentElement.clientHeight
 		);
-		console.log(window.pageYOffset, height * 0.75);
-		if (window.pageYOffset > height * 0.75) {
+		if (
+			window.pageYOffset > height * 0.75 ||
+			window.pageYOffset > height - 2000
+		) {
 			const search = props.state.search;
 			const inputs = props.state.inputs;
-			if (search.result.page <= search.result.total_pages && allow) {
-				setAllow(() => false);
+			if (allow) {
+				setAllow(() => false); // работает криво
 				setTimeout(() => {
 					setAllow(() => true);
 				}, 2000);
-				console.log('QUERY:', search.result.page, search.result.total_pages);
-				props.dispatch({
-					type: search.last,
-					title: inputs.title,
-					genre: inputs.genres.value.id,
-					rate: inputs.rates.value.id,
-					year: inputs.year,
-					page: ++search.result.page // чтобы пришли новые данные, увеличиваем page
-				});
+				console.log('SCROLL:');
+				if (search.result.page < search.result.total_pages) {
+					console.log(search.result.page, search.result.total_pages);
+					props.dispatch({
+						type: search.last,
+						title: inputs.title,
+						genre: inputs.genres.value.id,
+						rate: inputs.rates.value.id,
+						year: inputs.year,
+						page: ++search.result.page // чтобы пришли новые данные, увеличиваем page
+					});
+				} else {
+					console.log('MEGA', search.result.page, search.result.total_pages);
+					props.dispatch({
+						type: 'SEARCH_LIST',
+						page: ++search.result.page // чтобы пришли новые данные, увеличиваем page
+					});
+				}
 			}
 		}
 	};

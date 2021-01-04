@@ -15,7 +15,6 @@ const Cards = ({ result, event }) => {
 							? data.release_date.split('-')[0]
 							: 'Дата выхода неизвестна'
 					} // отображение только года
-					img={data.backdrop_path}
 					id={data.id}
 					event={event}
 				/>

@@ -57,13 +57,34 @@ const searchReducer = (state = initialState, action) => {
 				loading: true
 			};
 		case 'SEARCH_LIST_SUCCEEDED':
-			return {
-				...state,
-				result: action.result,
-				query: '/search',
-				loading: false,
-				last: 'SEARCH_LIST'
-			};
+			if (action.result.page > 1) {
+				const arr = action.result.results;
+				for (let i = 0; i < action.result.results.length; i++) {
+					for (let t = 0; t < state.result.results.length; t++) {
+						if (action.result.results[i].id === state.result.results[t].id) {
+							arr.splice(i, 1);
+						}
+					}
+				}
+				return {
+					...state,
+					result: {
+						...action.result,
+						results: state.result.results.concat(arr)
+					},
+					query: '/search',
+					loading: false,
+					last: 'SEARCH_LIST'
+				};
+			} else {
+				return {
+					...state,
+					result: action.result,
+					query: '/search',
+					loading: false,
+					last: 'SEARCH_LIST'
+				};
+			}
 		case 'SEARCH_LIST_FAILED':
 			return {
 				...state,

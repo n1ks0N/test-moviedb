@@ -1,10 +1,11 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { API_KEY } from '../constants/keys';
 
 function* fetchSearchQuery(action) {
 	try {
 		const query = yield call(() => {
 			return fetch(
-				`https://api.themoviedb.org/3/search/movie?api_key=19a8c14831badda7e2277e0932b1d5d1&language=ru&query=${action.title}&page=${action.page}&include_adult=false&year=${action.year}`
+				`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=ru&query=${action.title}&page=${action.page}&include_adult=false&year=${action.year}`
 			)
 				.then((response) => response.json())
 				.then((result) => {

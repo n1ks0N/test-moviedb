@@ -3,8 +3,11 @@ import Cards from './cards/Cards';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-	min-width: 800px;
-	max-width: 800px;
+	width: calc(100vw - 400px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 `;
 
 const List = ({ result, event }) => {
