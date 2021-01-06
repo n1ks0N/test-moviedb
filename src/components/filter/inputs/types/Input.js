@@ -1,6 +1,11 @@
 import React, { useRef } from 'react';
+import styled from 'styled-components';
 
-const InputText = ({ type, name, text, placeholder, value, event }) => {
+const FormGroup = styled.div`
+	width: ${(props) => (props.width ? `${props.width}%` : '')};
+`;
+
+const InputText = ({ type, name, text, placeholder, value, width, event }) => {
 	const input = useRef(value);
 	const change = () => {
 		event({
@@ -9,7 +14,7 @@ const InputText = ({ type, name, text, placeholder, value, event }) => {
 		});
 	};
 	return (
-		<div className="form-group">
+		<FormGroup className="form-group" width={width}>
 			<label htmlFor={name}>{text}</label>
 			<input
 				type={type}
@@ -20,7 +25,7 @@ const InputText = ({ type, name, text, placeholder, value, event }) => {
 				value={value}
 				onChange={change}
 			/>
-		</div>
+		</FormGroup>
 	);
 };
 

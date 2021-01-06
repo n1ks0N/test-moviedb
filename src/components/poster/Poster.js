@@ -21,15 +21,30 @@ const ImgWrapper = styled.div`
 	text-align: center;
 	width: 100%;
 	margin-top: 50px;
-`
+`;
+const Button = styled.button`
+	position: absolute;
+	top: 5px;
+	left: 5px;
+`;
 
-const Poster = ({ poster, poster: { result } }) => {
+const Poster = ({ poster, poster: { result }, dispatch }) => {
+	const closePoster = () => {
+		dispatch({
+			type: 'CLOSE_POSTER'
+		});
+	};
 	return (
 		<Wrapper>
 			{poster.loading ? (
-				<>Loading...</>
+				<div className="spinner-border text-primary" role="status">
+					<span className="sr-only">Loading...</span>
+				</div>
 			) : (
 				<div>
+					<Button className="close" onClick={closePoster}>
+						<span aria-hidden="true">&times;</span>
+					</Button>
 					<h2>{result.title}</h2>
 					<p>{result.overview}</p>
 					<h5>{result.original_title}</h5>
@@ -48,7 +63,10 @@ const Poster = ({ poster, poster: { result } }) => {
 						{result.vote_average}
 					</Text>
 					<p>
-						Дата выхода: <time>{result.release_date}</time>
+						Дата выхода:{' '}
+						<time>
+							{result.release_date ? result.release_date : 'Неизвестна'}
+						</time>
 					</p>
 					<div>
 						{result.runtime !== 0 ? (
@@ -77,15 +95,15 @@ const Poster = ({ poster, poster: { result } }) => {
 						)}
 					</div>
 					<ImgWrapper>
-					{result.backdrop_path ? (
-						<img
-							src={`https://image.tmdb.org/t/p/w300${result.backdrop_path}`}
-							alt="Постер"
-							align="center"
-						/>
-					) : (
-						<></>
-					)}
+						{result.backdrop_path ? (
+							<img
+								src={`https://image.tmdb.org/t/p/w300${result.backdrop_path}`}
+								alt="Постер"
+								align="center"
+							/>
+						) : (
+							<></>
+						)}
 					</ImgWrapper>
 				</div>
 			)}

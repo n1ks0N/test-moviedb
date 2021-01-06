@@ -6,6 +6,12 @@ const initialState = {
 
 const posterReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case 'CLOSE_POSTER':
+			return {
+				...state,
+				show: false
+			};
+
 		case 'GET_FILM':
 			return {
 				result: {},
@@ -28,6 +34,8 @@ const posterReducer = (state = initialState, action) => {
 			return state;
 	}
 };
+
+export const closePosterActionCreator = () => ({ type: 'CLOSE_POSTER' });
 
 export const getFilmActionCreator = () => ({ type: 'GET_FILM' });
 export const getFilmSucceededActionCreator = (result) => ({

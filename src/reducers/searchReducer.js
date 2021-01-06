@@ -1,15 +1,29 @@
 const initialState = {
 	result: {
 		page: 0,
-		total_pages: 1
+		total_pages: 1,
+		results: []
 	},
 	query: '/home',
 	loading: false,
-	last: ''
+	last: null,
+	error: {
+		status: false,
+		message: null
+	}
 };
 
 const searchReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case 'CLOSE_ALERT':
+			return {
+				...state,
+				error: {
+					...state.error,
+					status: false
+				}
+			};
+
 		case 'SEARCH_QUERY':
 			return {
 				...state,
@@ -33,7 +47,11 @@ const searchReducer = (state = initialState, action) => {
 					},
 					query: '/search',
 					loading: false,
-					last: 'SEARCH_QUERY'
+					last: 'SEARCH_QUERY',
+					error: {
+						status: false,
+						message: null
+					}
 				};
 			} else {
 				return {
@@ -41,14 +59,21 @@ const searchReducer = (state = initialState, action) => {
 					result: action.result,
 					query: '/search',
 					loading: false,
-					last: 'SEARCH_QUERY'
+					last: 'SEARCH_QUERY',
+					error: {
+						status: false,
+						message: null
+					}
 				};
 			}
 		case 'SEARCH_QUERY_FAILED':
 			return {
 				...state,
-				result: action.error,
-				loading: false
+				loading: false,
+				error: {
+					status: true,
+					message: action.error
+				}
 			};
 
 		case 'SEARCH_LIST':
@@ -74,7 +99,11 @@ const searchReducer = (state = initialState, action) => {
 					},
 					query: '/search',
 					loading: false,
-					last: 'SEARCH_LIST'
+					last: 'SEARCH_LIST',
+					error: {
+						status: false,
+						message: null
+					}
 				};
 			} else {
 				return {
@@ -82,20 +111,31 @@ const searchReducer = (state = initialState, action) => {
 					result: action.result,
 					query: '/search',
 					loading: false,
-					last: 'SEARCH_LIST'
+					last: 'SEARCH_LIST',
+					error: {
+						status: false,
+						message: null
+					}
 				};
 			}
 		case 'SEARCH_LIST_FAILED':
 			return {
 				...state,
-				result: action.error,
-				loading: false
+				loading: false,
+				error: {
+					status: true,
+					message: action.error
+				}
 			};
 
 		default:
 			return state;
 	}
 };
+
+export const closeAlertActionCreator = () => ({
+	type: 'CLOSE_ALERT'
+});
 
 export const searchQueryActionCreator = () => ({
 	type: 'SEARCH_QUERY'

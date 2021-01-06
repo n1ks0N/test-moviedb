@@ -9,54 +9,42 @@ function* fetchSearchQuery(action) {
 			)
 				.then((response) => response.json())
 				.then((result) => {
+					let newResults = result.results
 					if (action.genre !== 0) {
-						// при action.genre = 0, жанр любой
-						const newResults = result.results
-							.filter((data) => {
-								if (
-									data.genre_ids.includes(action.genre) &&
-									data.vote_average >= action.rate
-								) {
-									return data;
-								} else {
-									return 0;
-								}
-							})
-							.sort((a, b) => {
-								// сортировка по дате от новых к старым
-								if (a.release_date < b.release_date) return 1;
-								if (a.release_date > b.release_date) return -1;
+						newResults = newResults.filter((data) => {
+							if (
+								data.genre_ids.includes(action.genre) &&
+								data.vote_average >= action.rate
+							) {
+								return data;
+							} else {
 								return 0;
-							});
-						return {
-							...result,
-							results: newResults
-						};
+							}
+						})
 					} else {
-						const newResults = result.results
-							.filter((data) => {
-								if (data.vote_average >= action.rate) {
-									return data;
-								} else {
-									return 0;
-								}
-							})
-							.sort((a, b) => {
-								// сортировка по дате от новых к старым
-								if (a.release_date < b.release_date) return 1;
-								if (a.release_date > b.release_date) return -1;
+						newResults = newResults.filter((data) => {
+							if (data.vote_average >= action.rate) {
+								return data;
+							} else {
 								return 0;
-							});
-						return {
-							...result,
-							results: newResults
-						};
+							}
+						})
 					}
+					newResults = newResults.sort((a, b) => {
+						// сортировка по дате от новых к старым
+						if (a.release_date < b.release_date) return 1;
+						if (a.release_date > b.release_date) return -1;
+						return 0;
+					});
+					return {
+						...result,
+						results: newResults
+					};
 				});
 		});
 		yield put({ type: 'SEARCH_QUERY_SUCCEEDED', result: query });
 	} catch (e) {
-		yield put({ type: 'SEARCH_QUERY_FAILED', error: e });
+		yield put({ type: 'SEARCH_QUERY_FAILED', error: e.message });
 	}
 }
 

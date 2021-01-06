@@ -1,6 +1,6 @@
 import { inputsValue } from '../constants/inputsValue';
 const initialState = {
-	title: 'гонки',
+	title: '',
 	year: '',
 	genres: {
 		select: [
@@ -141,7 +141,7 @@ const searchReducer = (state = initialState, action) => {
 				};
 			} else {
 				if (action.name === 'year') {
-					if (action.value.length <= 4) {
+					if (action.value.length <= 4) { // год содержит не более 4 цифр
 						return {
 							...state,
 							[action.name]: action.value

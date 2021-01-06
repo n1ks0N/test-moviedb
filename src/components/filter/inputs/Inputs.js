@@ -4,15 +4,25 @@ import Select from './types/Select';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-	width: 800px;
-	padding: 25px;
+	width: 750px;
+	padding: 25px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	.form-group: {
+		width: 100%;
+	}
 `;
-
 const FlexWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	width: 100%;
+	.form-group: {
+		width: 100%;
+	}
 `;
 
 const Inputs = ({ dispatch, inputs: { title, year, genres, rates } }) => {
@@ -31,6 +41,7 @@ const Inputs = ({ dispatch, inputs: { title, year, genres, rates } }) => {
 				text="Название фильма"
 				placeholder="Побег из Шоушенка"
 				value={title}
+				width="100"
 				event={changeInput}
 			/>
 			<FlexWrapper>
@@ -44,7 +55,7 @@ const Inputs = ({ dispatch, inputs: { title, year, genres, rates } }) => {
 				/>
 				<Select
 					name="genres"
-					text="Жанры"
+					text="Жанр"
 					defaultValue={genres.value.value}
 					value={genres.select}
 					event={changeInput}

@@ -5,15 +5,18 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-	width: 800px;
+	width: calc(100vw - 400px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 `;
-
 const FlexWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0 25px;
+	width: 750px;
 `;
 
 const Filter = ({ inputs, event, dispatch }) => {

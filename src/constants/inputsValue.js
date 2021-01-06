@@ -3,6 +3,6 @@ import { genres } from './values/genres';
 export const inputsValue = {
 	title: '',
 	year: '',
-	genres: rates,
-	rates: genres
+	genres: genres,
+	rates: rates
 };
