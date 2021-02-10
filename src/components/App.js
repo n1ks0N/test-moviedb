@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, useLocation, withRouter } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Home from './pages/Home';
 import Movies from './pages/Movies';
 import styled from 'styled-components';
@@ -11,15 +12,16 @@ const Button = styled.button`
 	display: ${(props) => (props.show ? 'block' : 'none')};
 `;
 
-const App = (props) => {
-	const search = props.state.search;
-	const inputs = props.state.inputs;
+const App = () => {
+	const dispatch = useDispatch();
+	const { search, inputs } = useSelector((store) => store);
+
 	const [allowScroll, setAllowScroll] = useState(true);
 	const [showBtnUp, setShowBtnUp] = useState(false);
-	const location = useLocation();
+
 	useEffect(() => {
 		if (search.result.results.length < 10 && search.loading === false) {
-			props.dispatch({
+			dispatch({
 				type: 'SEARCH_LIST',
 				genre: inputs.genres.value.id,
 				rate: inputs.rates.value.id,
@@ -27,7 +29,8 @@ const App = (props) => {
 				page: ++search.result.page // чтобы пришли новые данные, увеличиваем page
 			});
 		}
-	}, [props.state.search]);
+	}, [search]);
+
 	const scrolling = () => {
 		const height = Math.max(
 			document.body.clientHeight,
@@ -43,7 +46,7 @@ const App = (props) => {
 					setAllowScroll(() => true);
 				}, 2000);
 				if (search.result.page < search.result.total_pages) {
-					props.dispatch({
+					dispatch({
 						type: search.last,
 						title: inputs.title,
 						genre: inputs.genres.value.id,
@@ -52,7 +55,7 @@ const App = (props) => {
 						page: ++search.result.page // чтобы пришли новые данные, увеличиваем page
 					});
 				} else {
-					props.dispatch({
+					dispatch({
 						type: 'SEARCH_LIST',
 						genre: inputs.genres.value.id,
 						rate: inputs.rates.value.id,
@@ -68,14 +71,16 @@ const App = (props) => {
 			if (showBtnUp) setShowBtnUp(() => false);
 		}
 	};
+
 	const up = () => {
 		window.scrollTo(0, 0);
 	};
+
 	return (
 		<div onWheel={scrolling}>
-			<Route path="/" render={() => Home(props, location)} />
+			<Route path="/" component={Home} />
 			<Switch>
-				<Route path="/search" component={() => Movies(props)} />
+				<Route path="/search" component={Movies} />
 			</Switch>
 			<Button
 				type="button"
@@ -101,4 +106,4 @@ const App = (props) => {
 	);
 };
 
-export default withRouter(App);
+export default App;

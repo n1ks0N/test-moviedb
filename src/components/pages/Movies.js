@@ -1,7 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+
 import List from '../list/List';
 import Poster from '../poster/Poster';
-import styled from 'styled-components';
 
 const FlexWrapper = styled.div`
 	display: flex;
@@ -20,7 +22,10 @@ const Alert = styled.div`
 	}
 `;
 
-const Movies = ({ state: { search, poster }, dispatch }) => {
+const Movies = () => {
+	const dispatch = useDispatch();
+	const { search, poster } = useSelector((store) => store);
+
 	const showPoster = (id) => {
 		dispatch({
 			type: 'GET_FILM',
