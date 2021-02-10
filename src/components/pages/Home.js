@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Filter from '../filter/Filter';
 import Button from '../buttons/Button';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -12,7 +14,11 @@ const Wrapper = styled.div`
 	align-items: center;
 `;
 
-const Home = ({ state: { inputs, search }, dispatch, location }) => {
+const Home = () => {
+	const location = useLocation();
+	const dispatch = useDispatch();
+	const { search, inputs } = useSelector((store) => store);
+
 	const searchQuery = () => {
 		if (inputs.title) {
 			dispatch({
@@ -33,12 +39,14 @@ const Home = ({ state: { inputs, search }, dispatch, location }) => {
 			});
 		}
 	};
+
 	const searchList = () => {
 		dispatch({
 			type: 'SEARCH_LIST',
 			page: ++search.result.page
 		});
 	};
+
 	return (
 		<>
 			{location.pathname !== '/search' ? (
